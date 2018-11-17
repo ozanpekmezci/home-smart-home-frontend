@@ -1,7 +1,7 @@
 <template>
   <v-app
     id="inspire"
-    dark>
+    >
     <v-navigation-drawer
       v-model="drawer"
       fixed
