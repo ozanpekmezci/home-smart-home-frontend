@@ -8,36 +8,51 @@
       <div v-if="loading">Loading...</div>
 
       <line-chart v-else :data=response></line-chart>
+      data is <br>
+      {{response}}
     </section>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import ApiSerivce from '@/services/api'
 
 export default {
   name: 'Charts',
   props: {
     msg: String
   },
-  data: function() {
+  data: function () {
     return {
-        response: '',
-        loading: true,
-        errored: false,
-        errorMessage: ''
-      };
-  },
-    mounted () {
-      axios
-        .get('https://api.coindesk.com/v1/bpi/historical/close.json?start=2013-09-01&end=2014-01-05')
-        .then(response => (this.response = response.data.bpi))
-        .catch(error => {
-          this.errorMessage = error
-          this.errored = true
-        })
-        .finally(() => this.loading = false)
+      response: '',
+      loading: true,
+      errored: false,
+      errorMessage: ''
     }
+  },
+  mounted () {
+    ApiSerivce
+      .get('timeseries/temperature/')
+      .then((response) => {
+        console.log(response)
+        this.response = this.mapTimeseries(response)
+      })
+      .catch(error => {
+        console.log('Error is ', error)
+        this.errorMessage = error
+        this.errored = true
+      })
+      .finally(() => { this.loading = false })
+  },
+  methods: {
+    mapTimeseries (ts) {
+      let result = {}
+      for (let x of ts) {
+        result[x['timestamp']] = x['value']
+      }
+      return result
+    }
+  }
 }
 </script>
 
