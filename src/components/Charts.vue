@@ -17,6 +17,45 @@
       </div>
       
     </section>
+    <v-dialog
+      :value="userAsleep && notified"
+      width="500"
+    >
+
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          User fell asleep
+        </v-card-title>
+
+        <v-card-text>
+          Now the system will:
+          <ul>
+            <li>Dim the ligths</li>
+            <li>Turn off the TV</li>
+            <li>Whatever</li>
+            <li>Whatever</li>
+            <li>Whatever</li>
+          </ul>
+
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            flat
+            @click="userAsleep = false"
+          >
+            I accept
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -34,6 +73,7 @@ export default {
       loading: true,
       errored: false,
       userAsleep:false,
+      notified:false,
       errorMessage: ''
     }
   },
@@ -61,6 +101,7 @@ export default {
       return result
     },
     updateUserSleep (data) {
+      this.notified = true
       this.userAsleep = data.value
     }
   }
