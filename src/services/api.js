@@ -20,12 +20,12 @@ class ApiServiceConstr {
     })
   }
 
-  login (email, password) {
+  /* login (email, password) {
 
   }
   logout () {
 
-  }
+  } */
 
   onceUserChange (callb) {
     this.v.$once('user-change', callb)
@@ -36,7 +36,6 @@ class ApiServiceConstr {
   onSocketMessage (callb) {
     this.apiSocket.on('data', (data) => {
       let strings = new TextDecoder('utf-8').decode(data)
-      console.log(strings)
       try {
         let newObj = JSON.parse(strings)
         callb(newObj['object'] || {})

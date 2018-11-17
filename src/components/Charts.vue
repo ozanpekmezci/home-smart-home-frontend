@@ -86,7 +86,7 @@ export default {
       })
       .catch(error => {
         console.log('Error is ', error)
-        this.errorMessage = onSocketMessage
+        this.errorMessage = error
         this.errored = true
       })
       .finally(() => { this.loading = false })
