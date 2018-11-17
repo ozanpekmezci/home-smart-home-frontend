@@ -3,13 +3,19 @@
     <section v-if="errored">
       <p> {{errorMessage}} </p>
     </section>
-
+    
     <section v-else>
       <div v-if="loading">Loading...</div>
-
-      <line-chart v-else :data=response></line-chart>
-      data is <br>
-      {{response}}
+      <div v-else>
+        <line-chart :data=response></line-chart>
+        <section v-if="!userAsleep">
+          <h2> USER IS AWAKE </h2>
+        </section>
+        <section v-else>
+          <h2> USER IS SLEEPING </h2>
+        </section>
+      </div>
+      
     </section>
   </div>
 </template>
@@ -27,6 +33,7 @@ export default {
       response: '',
       loading: true,
       errored: false,
+      userAsleep:false,
       errorMessage: ''
     }
   },
@@ -39,10 +46,11 @@ export default {
       })
       .catch(error => {
         console.log('Error is ', error)
-        this.errorMessage = error
+        this.errorMessage = onSocketMessage
         this.errored = true
       })
       .finally(() => { this.loading = false })
+    ApiSerivce.onSocketMessage(this.updateUserSleep)
   },
   methods: {
     mapTimeseries (ts) {
@@ -51,8 +59,12 @@ export default {
         result[x['timestamp']] = x['value']
       }
       return result
+    },
+    updateUserSleep (data) {
+      this.userAsleep = data.value
     }
   }
+
 }
 </script>
 

@@ -1,16 +1,22 @@
 import axios from 'axios'
 import Vue from 'vue'
+import Socket from 'simple-websocket'
 
+const BASE_HOST = '131.159.209.35:8085'
 class ApiServiceConstr {
   constructor () {
     this.v = new Vue()
     this.user = null
     this.x = axios.create({
-      baseURL: 'http://131.159.209.35:8085/',
-      timeout: 5000,
-      //withCredentials: true,
+      baseURL: 'http://' + BASE_HOST + '/',
+      timeout: 5000
+      // withCredentials: true,
       // headers: {'Access-Control-Allow-Origin': '*'}
 
+    })
+    this.apiSocket = new Socket('ws://' + BASE_HOST + '/ws/event-entryies/')
+    this.apiSocket.on('connect', function () {
+      console.log('Connected to web socket')
     })
   }
 
@@ -27,6 +33,18 @@ class ApiServiceConstr {
   onUserChange (callb) {
     this.v.$on('user-change', callb)
   }
+  onSocketMessage (callb) {
+    this.apiSocket.on('data', (data) => {
+      let strings = new TextDecoder('utf-8').decode(data)
+      console.log(strings)
+      try {
+        let newObj = JSON.parse(strings)
+        callb(newObj['object'] || {})
+      } catch (e) {
+        callb({})
+      }
+    })
+  }
   get (path) {
     return this.x.get(path).then((res) => {
       window.localStorage.setItem(path, JSON.stringify(res.data))
@@ -35,4 +53,5 @@ class ApiServiceConstr {
   }
 }
 const ApiSerivce = new ApiServiceConstr()
+
 export default ApiSerivce
