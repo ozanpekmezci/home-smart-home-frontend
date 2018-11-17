@@ -1,29 +1,39 @@
-# home-sweet-home
+# Home Smart Home
+
+This software functions as a dashboard for the `Home Smart Home` project.
+
+## Dependencies
+
+`Node.js` and `yarn(npm)` are required.
 
 ## Project setup
-```
-npm install
+
+```bash
+yarn install
 ```
 
 ### Compiles and hot-reloads for development
-```
-npm run serve
+
+```bash
+yarn run serve
 ```
 
 ### Compiles and minifies for production
-```
-npm run build
+
+```bash
+yarn run build
 ```
 
 ### Run your tests
-```
-npm run test
+
+After writing test cases and defining the command in `package.json`:
+
+```bash
+yarn run test
 ```
 
 ### Lints and fixes files
-```
-npm run lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```bash
+yarn run lint
+```
