@@ -50,7 +50,7 @@
     <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-icon class="mx-3">fas fa-home</v-icon>
       <v-toolbar-title class="mr-5 align-center">
-        <span class="title">Home Sweet Home</span>
+        <span class="title">Home Smart Home</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-layout row align-center style="max-width: 650px">
