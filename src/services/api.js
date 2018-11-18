@@ -2,7 +2,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import Socket from 'simple-websocket'
 
-const BASE_HOST = '131.159.209.35:8085'
+const BASE_HOST = '127.0.0.1:8000'
 class ApiServiceConstr {
   constructor () {
     this.v = new Vue()

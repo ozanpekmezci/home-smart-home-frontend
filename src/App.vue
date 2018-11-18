@@ -1,105 +1,82 @@
 <template>
-  <v-app
-    id="inspire"
-    >
-    <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      clipped
-      app
-    >
-          <v-list dense>
-        <v-list-tile v-for="item in items" :key="item.text">
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>
-              {{ item.text }}
-            </v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-subheader class="mt-3 grey--text text--darken-1">USERS</v-subheader>
-        <v-list>
-          <v-list-tile v-for="item in items2" :key="item.text" avatar>
-            <v-list-tile-avatar>
-              <img :src="item.picture" alt="">
-            </v-list-tile-avatar>
-            <v-list-tile-title v-text="item.text"></v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-        <v-list-tile class="mt-3">
-          <v-list-tile-action>
-            <v-icon color="grey darken-1">add_circle_outline</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title class="grey--text text--darken-1">Devices</v-list-tile-title>
-        </v-list-tile>
-        <v-list-tile>
-          <v-list-tile-action>
-            <v-icon color="grey darken-1">settings</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title class="grey--text text--darken-1">Settings</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-toolbar
-      dense
-      fixed
-      clipped-left
-      app>
-    <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-icon class="mx-3">fas fa-home</v-icon>
-      <v-toolbar-title class="mr-5 align-center">
-        <span class="title">Home Smart Home</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-layout row align-center style="max-width: 650px">
-        <v-text-field
-          @click:append="() => {}"
-          placeholder="Search..."
-          single-line
-          append-icon="search"
-          color="white"
-          hide-details
-        ></v-text-field>
-      </v-layout>
-    </v-toolbar>
-
+  <v-app id="inspire">
     <v-content>
-      <v-container fluid>
-          <Charts/>
+      <v-container fluid class="extra-top-space">
+          <v-layout row wrap>
+        <v-flex xs8>
+          <Charts />
+        </v-flex>
+        <v-flex xs4>
+          <Lamp :on='userAsleep'></Lamp>
+        </v-flex>
+        </v-layout>
       </v-container>
-
     </v-content>
+
+    <div class="custom-alert" :class='{active:userAsleep}'>
+      <h2>User is asleep</h2>
+    </div>
   </v-app>
 </template>
 
 <script>
-import Charts from './components/Charts'
-
-export default {
-  name: 'App',
-  components: {
-    Charts
-  },
-  data () {
-    return {
-      drawer: null,
-            items: [
-        { icon: 'trending_up', text: 'Most Popular' },
-        { icon: 'subscriptions', text: 'Subscriptions' },
-        { icon: 'history', text: 'History' },
-        { icon: 'featured_play_list', text: 'Playlists' },
-        { icon: 'watch_later', text: 'Watch Later' }
-      ],
-            items2: [
-        { picture: "", text: 'Nic' },
-        { picture: '', text: 'Ozan' },
-        { picture: '', text: 'Ashish' },
-        { picture: "https://cdn-images-1.medium.com/max/406/1*X__evUOfxq3Nlug4kOtavA.jpeg", text: 'Reza' }
-      ]
-
+  import Charts from './components/Charts'
+  import Lamp from './components/Lamp'
+  import ApiSerivce from '@/services/api'
+  export default {
+    name: 'App',
+    components: {
+      Charts,
+      Lamp
+    },
+    data () {
+      return {
+        userAsleep: false,
+        notified: false
+      }
+    },
+    mounted () {
+      ApiSerivce.onSocketMessage(this.updateUserSleep)
+    },
+    methods: {
+      updateUserSleep (data) {
+        this.notified = true
+        this.userAsleep = data.value
+      }
     }
   }
-}
 </script>
+<style>
+  body {
+    background-color: #f60;
+    background-image: linear-gradient(30deg, #f60 0%, #ff8300 51%, #f18238 75%);
+    color: white;
+    opacity: 0.95;
+  }
+  .theme--light.application{
+    background: none!important
+  }
+  .extra-top-space {
+    margin-top: 50px;
+  }
+
+  .custom-alert {
+    position: fixed;
+    top: -200px;
+    left: 2%;
+    width: auto;
+    padding: 5px 20px;
+    min-width: 400px;
+    background: red;
+    z-index: 99;
+    ;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    transition: all 0.5s ease;
+  }
+
+  .custom-alert.active {
+    top: 2%;
+  }
+</style>

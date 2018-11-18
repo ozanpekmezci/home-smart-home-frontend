@@ -5,7 +5,7 @@ import VueChartkick from 'vue-chartkick'
 import Chart from 'chart.js'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-
+import './assets/main.css'
 Vue.config.productionTip = false
 
 Vue.use(VueChartkick, { adapter: Chart })

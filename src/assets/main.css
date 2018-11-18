@@ -1,0 +1,32 @@
+.frame {
+  width: 200px;
+  height: 200px;
+  border-radius: 2px;
+  /*box-shadow: 4px 8px 16px 0 rgba(0, 0, 0, 0.1);/*
+  overflow: hidden;
+  /* background: #44424a; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.frame #bulb {
+  width: 85px;
+  fill: #fff35c;
+  filter: drop-shadow(0 0 20px #fff35c);
+  transition: all 6.5s;
+}
+.frame.active #bulb {
+  cursor: pointer;
+  fill: #7e7e7e;
+  filter: drop-shadow(0 0 20px transparent);
+}
+.frame.active #bulb ~ #base {
+  fill: #7e7e7e;
+}
+.frame #base {
+  padding-top: 3px;
+  width: 35px;
+  fill: #fff;
+  transition: all 0.5s;
+}
